@@ -24,7 +24,12 @@ mixin (accessControlState : AccessControl.AccessControlState) {
     AccessControl.assignRole(accessControlState, caller, user, role);
   };
 
+  // Safe check that returns false for unregistered or anonymous callers instead of trapping
   public query ({ caller }) func isCallerAdmin() : async Bool {
-    AccessControl.isAdmin(accessControlState, caller);
+    if (caller.isAnonymous()) { return false };
+    switch (accessControlState.userRoles.get(caller)) {
+      case (?#admin) { true };
+      case (_) { false };
+    };
   };
 };
