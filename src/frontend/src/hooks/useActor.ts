@@ -15,7 +15,6 @@ export function useActor() {
       const isAuthenticated = !!identity;
 
       if (!isAuthenticated) {
-        // Return anonymous actor if not authenticated
         return await createActorWithConfig();
       }
 
@@ -26,23 +25,20 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
-      // Try to initialize access control -- ignore errors so the actor
-      // is always returned even if the init call fails.
-      try {
-        const adminToken = getSecretParameter("caffeineAdminToken") || "";
+
+      // CRITICAL FIX: Only call _initializeAccessControlWithSecret when a real
+      // admin token is present. Calling it with empty string resets backend admin state.
+      const adminToken = getSecretParameter("caffeineAdminToken");
+      if (adminToken && adminToken.trim() !== "") {
         await actor._initializeAccessControlWithSecret(adminToken);
-      } catch {
-        // Initialization may fail for new users or if env var isn't set.
-        // The actor is still valid for other calls like claimFirstAdmin.
       }
+
       return actor;
     },
-    // Only refetch when identity changes
     staleTime: Number.POSITIVE_INFINITY,
     enabled: true,
   });
 
-  // When the actor changes, invalidate dependent queries
   useEffect(() => {
     if (actorQuery.data) {
       queryClient.invalidateQueries({
