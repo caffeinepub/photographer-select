@@ -10,14 +10,12 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
       fontFamily: {
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ["Nunito", "system-ui", "sans-serif"],
+        display: ["Nunito", "system-ui", "sans-serif"],
       },
       colors: {
         border: "oklch(var(--border))",
@@ -70,26 +68,45 @@ export default {
           border: "oklch(var(--sidebar-border))",
           ring: "oklch(var(--sidebar-ring))",
         },
-        gold: {
-          DEFAULT: "oklch(0.73 0.10 75)",
-          muted: "oklch(0.60 0.07 75)",
-          subtle: "oklch(0.73 0.10 75 / 0.15)",
+        // Kid-friendly palette
+        coral: {
+          DEFAULT: "oklch(0.62 0.22 25)",
+          light: "oklch(0.72 0.18 25)",
+          dark: "oklch(0.52 0.22 25)",
         },
-        charcoal: {
-          DEFAULT: "oklch(0.12 0.012 221)",
-          light: "oklch(0.15 0.015 221)",
-          card: "oklch(0.22 0.018 221)",
-          border: "oklch(0.27 0.02 221)",
+        sky: {
+          DEFAULT: "oklch(0.65 0.15 220)",
+          light: "oklch(0.82 0.09 195)",
+          pale: "oklch(0.97 0.015 220)",
+        },
+        jungle: {
+          DEFAULT: "oklch(0.66 0.17 155)",
+          dark: "oklch(0.52 0.17 155)",
+        },
+        sunshine: {
+          DEFAULT: "oklch(0.82 0.18 85)",
+          light: "oklch(0.92 0.12 85)",
+        },
+        grape: {
+          DEFAULT: "oklch(0.56 0.23 280)",
+          light: "oklch(0.70 0.18 280)",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
+        xl: "1.5rem",
+        "2xl": "2rem",
+        "3xl": "3rem",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
-        gold: "0 0 0 2px oklch(0.73 0.10 75 / 0.5)",
+        kid: "0 8px 24px oklch(0.65 0.15 220 / 0.2), 0 2px 8px oklch(0.65 0.15 220 / 0.1)",
+        coral: "0 8px 24px oklch(0.62 0.22 25 / 0.35)",
+        grape: "0 8px 24px oklch(0.56 0.23 280 / 0.35)",
+        jungle: "0 8px 24px oklch(0.66 0.17 155 / 0.35)",
+        sunshine: "0 8px 24px oklch(0.82 0.18 85 / 0.35)",
+        card: "0 4px 20px oklch(0.65 0.15 220 / 0.12)",
       },
       keyframes: {
         "accordion-down": {
@@ -100,15 +117,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        shimmer: "shimmer 2s linear infinite",
       },
     },
   },
