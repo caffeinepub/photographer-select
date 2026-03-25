@@ -15,8 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["DM Sans", "system-ui", "sans-serif"],
-        serif: ["Playfair Display", "Georgia", "serif"],
-        display: ["Playfair Display", "Georgia", "serif"],
+        display: ["Bricolage Grotesque", "system-ui", "sans-serif"],
       },
       colors: {
         border: "oklch(var(--border))",
@@ -69,25 +68,17 @@ export default {
           border: "oklch(var(--sidebar-border))",
           ring: "oklch(var(--sidebar-ring))",
         },
-        rose: {
-          DEFAULT: "oklch(0.72 0.18 10)",
-          light: "oklch(0.88 0.10 10)",
-          pale: "oklch(0.96 0.04 10)",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 4px)",
-        sm: "calc(var(--radius) - 8px)",
-        xl: "1rem",
-        "2xl": "1.25rem",
-        "3xl": "1.75rem",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+        xl: "0.75rem",
+        "2xl": "1rem",
       },
       boxShadow: {
-        soft: "0 2px 12px oklch(0.18 0.01 265 / 0.08), 0 1px 3px oklch(0.18 0.01 265 / 0.06)",
-        card: "0 4px 24px oklch(0.18 0.01 265 / 0.10)",
-        photo: "0 8px 32px oklch(0.18 0.01 265 / 0.18)",
-        rose: "0 4px 16px oklch(0.72 0.18 10 / 0.30)",
+        card: "0 4px 24px oklch(0 0 0 / 0.40)",
+        photo: "0 8px 32px oklch(0 0 0 / 0.50)",
       },
       keyframes: {
         "accordion-down": {

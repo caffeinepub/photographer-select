@@ -26,14 +26,15 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
-      // Only call _initializeAccessControlWithSecret when a real token exists
       const adminToken = getSecretParameter("caffeineAdminToken");
-      if (adminToken && adminToken.length > 0) {
+      if (adminToken) {
         await actor._initializeAccessControlWithSecret(adminToken);
       }
       return actor;
     },
+    // Only refetch when identity changes
     staleTime: Number.POSITIVE_INFINITY,
+    // This will cause the actor to be recreated when the identity changes
     enabled: true,
   });
 

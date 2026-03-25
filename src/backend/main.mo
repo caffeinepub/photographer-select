@@ -143,6 +143,9 @@ actor {
     if (caller.isAnonymous()) {
       Runtime.trap("Must be logged in to claim photographer access");
     };
+    if (accessControlState.adminAssigned) {
+      Runtime.trap("Admin has already been claimed");
+    };
     accessControlState.userRoles.add(caller, #admin);
     accessControlState.adminAssigned := true;
   };

@@ -1,7 +1,7 @@
 @font-face {
-  font-family: "Playfair Display";
-  src: url("/assets/fonts/PlayfairDisplay.woff2") format("woff2");
-  font-weight: 400 800;
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+  font-weight: 200 800;
   font-style: normal;
   font-display: swap;
 }
@@ -20,45 +20,43 @@
 
 @layer base {
   :root {
-    --radius: 0.75rem;
-    /* Near white background */
-    --background: 0.98 0.004 250;
-    /* Near black foreground */
-    --foreground: 0.18 0.01 265;
-    /* White card */
-    --card: 1 0 0;
-    --card-foreground: 0.18 0.01 265;
-    --popover: 1 0 0;
-    --popover-foreground: 0.18 0.01 265;
-    /* Deep blue-gray primary */
-    --primary: 0.28 0.04 265;
-    --primary-foreground: 1 0 0;
-    /* Light gray secondary */
-    --secondary: 0.94 0.006 250;
-    --secondary-foreground: 0.28 0.04 265;
-    --muted: 0.95 0.005 250;
-    --muted-foreground: 0.52 0.016 265;
-    /* Rose pink accent for selections */
-    --accent: 0.72 0.18 10;
+    --radius: 0.5rem;
+    /* Dark studio theme */
+    --background: 0.09 0.005 250;
+    --foreground: 0.97 0.005 250;
+    --card: 0.14 0.006 250;
+    --card-foreground: 0.97 0.005 250;
+    --popover: 0.14 0.006 250;
+    --popover-foreground: 0.97 0.005 250;
+    /* White-ish primary */
+    --primary: 0.95 0.005 250;
+    --primary-foreground: 0.09 0.005 250;
+    /* Muted surface */
+    --secondary: 0.18 0.006 250;
+    --secondary-foreground: 0.85 0.005 250;
+    --muted: 0.18 0.006 250;
+    --muted-foreground: 0.55 0.01 250;
+    /* Rose red for hearts/selections */
+    --accent: 0.63 0.24 25;
     --accent-foreground: 1 0 0;
-    --destructive: 0.62 0.22 25;
+    --destructive: 0.63 0.24 25;
     --destructive-foreground: 1 0 0;
-    --border: 0.9 0.006 250;
-    --input: 0.9 0.006 250;
-    --ring: 0.28 0.04 265;
-    --chart-1: 0.28 0.04 265;
-    --chart-2: 0.72 0.18 10;
-    --chart-3: 0.55 0.12 155;
-    --chart-4: 0.65 0.15 220;
-    --chart-5: 0.75 0.16 85;
-    --sidebar: 0.14 0.01 265;
-    --sidebar-foreground: 0.92 0.004 250;
-    --sidebar-primary: 0.72 0.18 10;
+    --border: 0.22 0.008 250;
+    --input: 0.22 0.008 250;
+    --ring: 0.63 0.24 25;
+    --chart-1: 0.63 0.24 25;
+    --chart-2: 0.72 0.18 150;
+    --chart-3: 0.65 0.15 220;
+    --chart-4: 0.75 0.16 85;
+    --chart-5: 0.78 0.12 300;
+    --sidebar: 0.1 0.005 250;
+    --sidebar-foreground: 0.85 0.005 250;
+    --sidebar-primary: 0.63 0.24 25;
     --sidebar-primary-foreground: 1 0 0;
-    --sidebar-accent: 0.22 0.015 265;
-    --sidebar-accent-foreground: 0.92 0.004 250;
-    --sidebar-border: 0.28 0.02 265;
-    --sidebar-ring: 0.72 0.18 10;
+    --sidebar-accent: 0.18 0.006 250;
+    --sidebar-accent-foreground: 0.85 0.005 250;
+    --sidebar-border: 0.22 0.008 250;
+    --sidebar-ring: 0.63 0.24 25;
   }
 
   * {
@@ -66,7 +64,7 @@
   }
 
   html {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   body {
@@ -76,32 +74,33 @@
 }
 
 /* Disable image selection/download on client gallery */
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  pointer-events: none;
-}
-
 .gallery-image-wrapper {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .gallery-image-wrapper img {
   pointer-events: none;
+  -webkit-user-drag: none;
 }
 
-/* Photo selected overlay */
-.photo-selected-overlay {
-  background: oklch(0.72 0.18 10 / 0.18);
+/* Photo heart animation */
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-/* Smooth image loading */
-.photo-thumb {
-  transition: opacity 0.3s ease;
+.heart-pop {
+  animation: heart-pop 0.25s ease;
 }
 
 @keyframes fade-in {
@@ -117,19 +116,4 @@
 
 .animate-fade-in {
   animation: fade-in 0.4s ease forwards;
-}
-
-@keyframes scale-in {
-  from {
-    transform: scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-scale-in {
-  animation: scale-in 0.25s ease forwards;
 }
