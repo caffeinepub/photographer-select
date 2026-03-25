@@ -13,7 +13,7 @@ export default function AdminLogin() {
   const {
     data: isAdmin,
     isLoading: adminLoading,
-    refetch: refetchIsAdmin,
+    isFetching: adminFetching,
   } = useIsAdmin();
   const claimFirstAdmin = useClaimFirstAdmin();
   const router = useRouter();
@@ -24,8 +24,10 @@ export default function AdminLogin() {
     }
   }, [identity, isAdmin, router]);
 
-  const loggedInNotAdmin = !!identity && !adminLoading && isAdmin === false;
-  const checkingAdmin = !!identity && adminLoading;
+  const notLoggedIn = !identity;
+  const checkingAdmin = !!identity && (adminLoading || adminFetching);
+  const loggedInNotAdmin =
+    !!identity && !adminLoading && !adminFetching && !isAdmin;
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
@@ -35,7 +37,6 @@ export default function AdminLogin() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-sm"
       >
-        {/* Header */}
         <div className="text-center mb-10">
           <div className="text-5xl mb-4">📸</div>
           <h1 className="font-display text-3xl font-bold text-foreground tracking-tight">
@@ -46,8 +47,30 @@ export default function AdminLogin() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-card border border-border rounded-xl p-6 shadow-card">
+          {notLoggedIn && (
+            <>
+              <p className="text-sm text-muted-foreground text-center mb-5">
+                Sign in to manage your galleries and client selections.
+              </p>
+              <Button
+                onClick={login}
+                disabled={isLoggingIn || isInitializing}
+                className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/80 font-semibold"
+                data-ocid="login.submit_button"
+              >
+                {isLoggingIn || isInitializing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Loading...
+                  </>
+                ) : (
+                  "Sign In with Internet Identity"
+                )}
+              </Button>
+            </>
+          )}
+
           {checkingAdmin && (
             <div className="flex items-center justify-center gap-2 py-4 text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -67,7 +90,6 @@ export default function AdminLogin() {
                 onClick={async () => {
                   try {
                     await claimFirstAdmin.mutateAsync();
-                    await refetchIsAdmin();
                     toast.success("Photographer access claimed!");
                     router.navigate({ to: "/admin" });
                   } catch {
@@ -91,29 +113,6 @@ export default function AdminLogin() {
                 )}
               </Button>
             </motion.div>
-          )}
-
-          {!identity && (
-            <>
-              <p className="text-sm text-muted-foreground text-center mb-5">
-                Sign in to manage your galleries and client selections.
-              </p>
-              <Button
-                onClick={login}
-                disabled={isLoggingIn || isInitializing}
-                className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/80 font-semibold"
-                data-ocid="login.submit_button"
-              >
-                {isLoggingIn || isInitializing ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    Loading...
-                  </>
-                ) : (
-                  "Sign In with Internet Identity"
-                )}
-              </Button>
-            </>
           )}
         </div>
 
