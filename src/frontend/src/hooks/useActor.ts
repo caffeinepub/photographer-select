@@ -26,6 +26,8 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
+      // Only initialize with a real token -- NEVER call with empty string
+      // as that would reset admin state and break gallery creation
       const adminToken = getSecretParameter("caffeineAdminToken");
       if (adminToken) {
         await actor._initializeAccessControlWithSecret(adminToken);
