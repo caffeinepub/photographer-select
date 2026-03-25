@@ -26,6 +26,8 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
+      // ONLY call _initializeAccessControlWithSecret when a real token exists.
+      // Calling it with an empty string resets admin state and breaks uploads.
       const adminToken = getSecretParameter("caffeineAdminToken");
       if (adminToken) {
         await actor._initializeAccessControlWithSecret(adminToken);

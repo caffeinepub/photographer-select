@@ -24,19 +24,8 @@ export default function AdminLogin() {
     }
   }, [identity, isAdmin, router]);
 
-  const loading = isInitializing || (!!identity && adminLoading);
   const loggedInNotAdmin = !!identity && !adminLoading && isAdmin === false;
-
-  async function handleClaimAccess() {
-    try {
-      await claimFirstAdmin.mutateAsync();
-      await refetchIsAdmin();
-      toast.success("Photographer access claimed! Welcome to your studio.");
-      router.navigate({ to: "/admin" });
-    } catch {
-      toast.error("Failed to claim photographer access. Please try again.");
-    }
-  }
+  const checkingAdmin = !!identity && adminLoading;
 
   return (
     <div
@@ -74,23 +63,12 @@ export default function AdminLogin() {
             Sign in to manage your galleries and client selections.
           </p>
 
-          {/* Not logged in: show sign in button */}
-          {!identity && (
-            <Button
-              onClick={login}
-              disabled={isLoggingIn || loading}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium tracking-widest uppercase text-sm h-12"
-              data-ocid="login.submit_button"
-            >
-              {isLoggingIn || loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  {isLoggingIn ? "Signing In..." : "Loading..."}
-                </>
-              ) : (
-                "Sign In"
-              )}
-            </Button>
+          {/* Checking admin status after login */}
+          {checkingAdmin && (
+            <div className="flex items-center justify-center gap-2 py-4 text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span className="text-sm">Verifying access...</span>
+            </div>
           )}
 
           {/* Logged in but not admin: show claim button */}
@@ -101,7 +79,20 @@ export default function AdminLogin() {
               transition={{ duration: 0.4 }}
             >
               <Button
-                onClick={handleClaimAccess}
+                onClick={async () => {
+                  try {
+                    await claimFirstAdmin.mutateAsync();
+                    await refetchIsAdmin();
+                    toast.success(
+                      "Photographer access claimed! Welcome to your studio.",
+                    );
+                    router.navigate({ to: "/admin" });
+                  } catch {
+                    toast.error(
+                      "Failed to claim photographer access. Please try again.",
+                    );
+                  }
+                }}
                 disabled={claimFirstAdmin.isPending}
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium tracking-widest uppercase text-sm h-12"
                 data-ocid="login.primary_button"
@@ -124,12 +115,28 @@ export default function AdminLogin() {
             </motion.div>
           )}
 
-          {/* Loading state */}
-          {loading && (
-            <div className="flex items-center justify-center gap-2 py-4 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-sm">Loading...</span>
-            </div>
+          {/* Not logged in: always show sign in button */}
+          {!identity && (
+            <Button
+              onClick={login}
+              disabled={isLoggingIn || isInitializing}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium tracking-widest uppercase text-sm h-12"
+              data-ocid="login.submit_button"
+            >
+              {isLoggingIn ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Signing In...
+                </>
+              ) : isInitializing ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Loading...
+                </>
+              ) : (
+                "Sign In with Internet Identity"
+              )}
+            </Button>
           )}
 
           <p className="text-xs text-muted-foreground text-center mt-6">
