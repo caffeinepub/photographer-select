@@ -3,7 +3,7 @@ import MixinAuthorization "authorization/MixinAuthorization";
 import MixinStorage "blob-storage/Mixin";
 import Storage "blob-storage/Storage";
 import Time "mo:core/Time";
-import Blob "mo:core/Blob";
+
 import Map "mo:core/Map";
 import Random "mo:core/Random";
 import Text "mo:core/Text";
@@ -143,8 +143,6 @@ actor {
     if (caller.isAnonymous()) {
       Runtime.trap("Must be logged in to claim photographer access");
     };
-    // Allow any authenticated user to claim photographer/admin access
-    // This is a personal studio app -- the photographer uses their own instance
     accessControlState.userRoles.add(caller, #admin);
     accessControlState.adminAssigned := true;
   };
@@ -291,7 +289,6 @@ actor {
 
   /// Access gallery by invite token (public - no authentication required)
   public shared func getGalleryByInviteToken(token : Text) : async (Gallery, [Photo]) {
-    // No authentication check - clients access via token without login
     switch (tokenToGalleryId.get(token)) {
       case (null) { Runtime.trap("Invalid invite token") };
       case (?galleryId) {
@@ -312,7 +309,6 @@ actor {
 
   /// Submit final selection (can only submit once) - public, no authentication required
   public shared func submitSelection(token : Text, selectedPhotoIds : [Text]) : async () {
-    // No authentication check - clients submit selections via token without login
     switch (tokenToGalleryId.get(token)) {
       case (null) { Runtime.trap("Invalid invite token") };
       case (?galleryId) {

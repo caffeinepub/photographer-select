@@ -26,17 +26,14 @@ export function useActor() {
       };
 
       const actor = await createActorWithConfig(actorOptions);
-      // ONLY call _initializeAccessControlWithSecret when a real token exists.
-      // Calling it with an empty string resets admin state and breaks uploads.
+      // Only call _initializeAccessControlWithSecret when a real token exists
       const adminToken = getSecretParameter("caffeineAdminToken");
-      if (adminToken) {
+      if (adminToken && adminToken.length > 0) {
         await actor._initializeAccessControlWithSecret(adminToken);
       }
       return actor;
     },
-    // Only refetch when identity changes
     staleTime: Number.POSITIVE_INFINITY,
-    // This will cause the actor to be recreated when the identity changes
     enabled: true,
   });
 
