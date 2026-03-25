@@ -12,28 +12,46 @@ export function useActor() {
   const actorQuery = useQuery<backendInterface>({
     queryKey: [ACTOR_QUERY_KEY, identity?.getPrincipal().toString()],
     queryFn: async () => {
-      if (!identity) {
+      const isAuthenticated = !!identity;
+
+      if (!isAuthenticated) {
+        // Return anonymous actor if not authenticated
         return await createActorWithConfig();
       }
-      const actor = await createActorWithConfig({ agentOptions: { identity } });
-      // Only call _initializeAccessControlWithSecret when a real token exists
+
+      const actorOptions = {
+        agentOptions: {
+          identity,
+        },
+      };
+
+      const actor = await createActorWithConfig(actorOptions);
+      // CRITICAL: Only call _initializeAccessControlWithSecret with a real token
+      // Never call it with an empty string - that resets admin state
       const adminToken = getSecretParameter("caffeineAdminToken");
-      if (adminToken) {
+      if (adminToken && adminToken.length > 0) {
         await actor._initializeAccessControlWithSecret(adminToken);
       }
       return actor;
     },
+    // Only refetch when identity changes
     staleTime: Number.POSITIVE_INFINITY,
+    // This will cause the actor to be recreated when the identity changes
     enabled: true,
   });
 
+  // When the actor changes, invalidate dependent queries
   useEffect(() => {
     if (actorQuery.data) {
       queryClient.invalidateQueries({
-        predicate: (query) => !query.queryKey.includes(ACTOR_QUERY_KEY),
+        predicate: (query) => {
+          return !query.queryKey.includes(ACTOR_QUERY_KEY);
+        },
       });
       queryClient.refetchQueries({
-        predicate: (query) => !query.queryKey.includes(ACTOR_QUERY_KEY),
+        predicate: (query) => {
+          return !query.queryKey.includes(ACTOR_QUERY_KEY);
+        },
       });
     }
   }, [actorQuery.data, queryClient]);

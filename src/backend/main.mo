@@ -110,7 +110,7 @@ actor {
 
   module Photo {
     public func compare(photo1 : Photo, photo2 : Photo) : Order.Order {
-      Int.compare(photo2.uploadedAt, photo1.uploadedAt);
+      Int.compare(photo1.uploadedAt, photo2.uploadedAt);
     };
   };
 
@@ -291,7 +291,7 @@ actor {
   // Customer (Public) Functions
 
   /// Access gallery by invite token (public - no authentication required)
-  public shared func getGalleryByInviteToken(token : Text) : async (Gallery, [Photo]) {
+  public query func getGalleryByInviteToken(token : Text) : async (Gallery, [Photo]) {
     switch (tokenToGalleryId.get(token)) {
       case (null) { Runtime.trap("Invalid invite token") };
       case (?galleryId) {
