@@ -61,6 +61,10 @@ export interface backendInterface {
     addPhoto(galleryId: string, blob: ExternalBlob, filename: string): Promise<Photo>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     /**
+     * / Claim photographer access -- any authenticated user can become a photographer
+     */
+    claimFirstAdmin(): Promise<void>;
+    /**
      * / Create a new gallery
      */
     createGallery(name: string, clientName: string): Promise<Gallery>;
@@ -81,7 +85,7 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     /**
-     * / Access gallery by invite token
+     * / Access gallery by invite token (public - no authentication required)
      */
     getGalleryByInviteToken(token: string): Promise<[Gallery, Array<Photo>]>;
     /**
@@ -102,11 +106,15 @@ export interface backendInterface {
      */
     getOrCreateInviteToken(galleryId: string): Promise<string>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    /**
+     * / Check if any admin exists
+     */
+    hasAnyAdmin(): Promise<boolean>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     submitRSVP(name: string, attending: boolean, inviteCode: string): Promise<void>;
     /**
-     * / Submit final selection (can only submit once)
+     * / Submit final selection (can only submit once) - public, no authentication required
      */
     submitSelection(token: string, selectedPhotoIds: Array<string>): Promise<void>;
 }

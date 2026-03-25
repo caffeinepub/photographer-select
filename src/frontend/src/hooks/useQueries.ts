@@ -3,6 +3,18 @@ import type { Gallery, Photo, PhotoSelection } from "../backend";
 import { ExternalBlob } from "../backend";
 import { useActor } from "./useActor";
 
+function normalizeGalleryTuple(result: unknown): [Gallery, Photo[]] {
+  const tuple = result as [Gallery, unknown];
+  const gallery = tuple[0];
+  const rawPhotos = tuple[1];
+  const photos: Photo[] = Array.isArray(rawPhotos)
+    ? rawPhotos
+    : rawPhotos
+      ? (Object.values(rawPhotos as object) as Photo[])
+      : [];
+  return [gallery, photos];
+}
+
 export function useIsAdmin() {
   const { actor, isFetching } = useActor();
   return useQuery<boolean>({
@@ -70,7 +82,8 @@ export function useGetGalleryWithPhotos(galleryId: string) {
     queryKey: ["gallery", galleryId],
     queryFn: async () => {
       if (!actor) throw new Error("No actor");
-      return actor.getGalleryWithPhotos(galleryId);
+      const result = await actor.getGalleryWithPhotos(galleryId);
+      return normalizeGalleryTuple(result);
     },
     enabled: !!actor && !isFetching && !!galleryId,
   });
@@ -106,7 +119,8 @@ export function useGetGalleryByInviteToken(token: string) {
     queryKey: ["galleryByToken", token],
     queryFn: async () => {
       if (!actor) throw new Error("No actor");
-      return actor.getGalleryByInviteToken(token);
+      const result = await actor.getGalleryByInviteToken(token);
+      return normalizeGalleryTuple(result);
     },
     enabled: !!actor && !isFetching && !!token,
     retry: false,

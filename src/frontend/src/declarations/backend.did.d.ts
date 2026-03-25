@@ -79,6 +79,10 @@ export interface _SERVICE {
   'addPhoto' : ActorMethod<[string, ExternalBlob, string], Photo>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   /**
+   * / Claim photographer access -- any authenticated user can become a photographer
+   */
+  'claimFirstAdmin' : ActorMethod<[], undefined>,
+  /**
    * / Create a new gallery
    */
   'createGallery' : ActorMethod<[string, string], Gallery>,
@@ -99,7 +103,7 @@ export interface _SERVICE {
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   /**
-   * / Access gallery by invite token
+   * / Access gallery by invite token (public - no authentication required)
    */
   'getGalleryByInviteToken' : ActorMethod<[string], [Gallery, Array<Photo>]>,
   /**
@@ -120,11 +124,15 @@ export interface _SERVICE {
    */
   'getOrCreateInviteToken' : ActorMethod<[string], string>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  /**
+   * / Check if any admin exists
+   */
+  'hasAnyAdmin' : ActorMethod<[], boolean>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'submitRSVP' : ActorMethod<[string, boolean, string], undefined>,
   /**
-   * / Submit final selection (can only submit once)
+   * / Submit final selection (can only submit once) - public, no authentication required
    */
   'submitSelection' : ActorMethod<[string, Array<string>], undefined>,
 }

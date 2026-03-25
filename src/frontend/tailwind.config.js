@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Nunito", "system-ui", "sans-serif"],
-        display: ["Nunito", "system-ui", "sans-serif"],
+        sans: ["DM Sans", "system-ui", "sans-serif"],
+        serif: ["Playfair Display", "Georgia", "serif"],
+        display: ["Playfair Display", "Georgia", "serif"],
       },
       colors: {
         border: "oklch(var(--border))",
@@ -68,45 +69,25 @@ export default {
           border: "oklch(var(--sidebar-border))",
           ring: "oklch(var(--sidebar-ring))",
         },
-        // Kid-friendly palette
-        coral: {
-          DEFAULT: "oklch(0.62 0.22 25)",
-          light: "oklch(0.72 0.18 25)",
-          dark: "oklch(0.52 0.22 25)",
-        },
-        sky: {
-          DEFAULT: "oklch(0.65 0.15 220)",
-          light: "oklch(0.82 0.09 195)",
-          pale: "oklch(0.97 0.015 220)",
-        },
-        jungle: {
-          DEFAULT: "oklch(0.66 0.17 155)",
-          dark: "oklch(0.52 0.17 155)",
-        },
-        sunshine: {
-          DEFAULT: "oklch(0.82 0.18 85)",
-          light: "oklch(0.92 0.12 85)",
-        },
-        grape: {
-          DEFAULT: "oklch(0.56 0.23 280)",
-          light: "oklch(0.70 0.18 280)",
+        rose: {
+          DEFAULT: "oklch(0.72 0.18 10)",
+          light: "oklch(0.88 0.10 10)",
+          pale: "oklch(0.96 0.04 10)",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 4px)",
         sm: "calc(var(--radius) - 8px)",
-        xl: "1.5rem",
-        "2xl": "2rem",
-        "3xl": "3rem",
+        xl: "1rem",
+        "2xl": "1.25rem",
+        "3xl": "1.75rem",
       },
       boxShadow: {
-        kid: "0 8px 24px oklch(0.65 0.15 220 / 0.2), 0 2px 8px oklch(0.65 0.15 220 / 0.1)",
-        coral: "0 8px 24px oklch(0.62 0.22 25 / 0.35)",
-        grape: "0 8px 24px oklch(0.56 0.23 280 / 0.35)",
-        jungle: "0 8px 24px oklch(0.66 0.17 155 / 0.35)",
-        sunshine: "0 8px 24px oklch(0.82 0.18 85 / 0.35)",
-        card: "0 4px 20px oklch(0.65 0.15 220 / 0.12)",
+        soft: "0 2px 12px oklch(0.18 0.01 265 / 0.08), 0 1px 3px oklch(0.18 0.01 265 / 0.06)",
+        card: "0 4px 24px oklch(0.18 0.01 265 / 0.10)",
+        photo: "0 8px 32px oklch(0.18 0.01 265 / 0.18)",
+        rose: "0 4px 16px oklch(0.72 0.18 10 / 0.30)",
       },
       keyframes: {
         "accordion-down": {

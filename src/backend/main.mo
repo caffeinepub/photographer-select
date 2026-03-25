@@ -124,7 +124,8 @@ actor {
   let galleries = Map.empty<Text, Gallery>();
   let photos = Map.empty<Text, Photo>();
   let selections = Map.empty<Text, PhotoSelection>();
-  let galleryInviteCodes = Map.empty<Text, Text>();
+  let galleryInviteCodes = Map.empty<Text, Text>(); // galleryId -> token
+  let tokenToGalleryId = Map.empty<Text, Text>(); // token -> galleryId (reverse lookup)
 
   // Helper function to generate UUIDs
   func generateUUID() : async Text {
@@ -186,6 +187,14 @@ actor {
     // Remove gallery, selection and invite codes
     galleries.remove(galleryId);
     selections.remove(galleryId);
+    
+    // Remove from both token maps
+    switch (galleryInviteCodes.get(galleryId)) {
+      case (?token) {
+        tokenToGalleryId.remove(token);
+      };
+      case (null) {};
+    };
     galleryInviteCodes.remove(galleryId);
   };
 
@@ -264,6 +273,7 @@ actor {
       case (null) {
         let token = await generateUUID();
         galleryInviteCodes.add(galleryId, token);
+        tokenToGalleryId.add(token, galleryId);
         token;
       };
     };
@@ -279,9 +289,10 @@ actor {
 
   // Customer (Public) Functions
 
-  /// Access gallery by invite token
+  /// Access gallery by invite token (public - no authentication required)
   public shared func getGalleryByInviteToken(token : Text) : async (Gallery, [Photo]) {
-    switch (galleryInviteCodes.get(token)) {
+    // No authentication check - clients access via token without login
+    switch (tokenToGalleryId.get(token)) {
       case (null) { Runtime.trap("Invalid invite token") };
       case (?galleryId) {
         switch (galleries.get(galleryId)) {
@@ -299,9 +310,10 @@ actor {
     };
   };
 
-  /// Submit final selection (can only submit once)
+  /// Submit final selection (can only submit once) - public, no authentication required
   public shared func submitSelection(token : Text, selectedPhotoIds : [Text]) : async () {
-    switch (galleryInviteCodes.get(token)) {
+    // No authentication check - clients submit selections via token without login
+    switch (tokenToGalleryId.get(token)) {
       case (null) { Runtime.trap("Invalid invite token") };
       case (?galleryId) {
         switch (galleries.get(galleryId)) {

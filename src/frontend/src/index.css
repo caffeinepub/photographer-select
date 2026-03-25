@@ -1,4 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/assets/fonts/PlayfairDisplay.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/assets/fonts/DMSans.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -6,45 +20,45 @@
 
 @layer base {
   :root {
-    --radius: 1rem;
-    /* Sky blue background #F4FBFF */
-    --background: 0.97 0.015 220;
-    /* Deep navy #1E2A44 */
-    --foreground: 0.25 0.05 245;
+    --radius: 0.75rem;
+    /* Near white background */
+    --background: 0.98 0.004 250;
+    /* Near black foreground */
+    --foreground: 0.18 0.01 265;
     /* White card */
     --card: 1 0 0;
-    --card-foreground: 0.25 0.05 245;
+    --card-foreground: 0.18 0.01 265;
     --popover: 1 0 0;
-    --popover-foreground: 0.25 0.05 245;
-    /* Coral #FF5B5B */
-    --primary: 0.62 0.22 25;
+    --popover-foreground: 0.18 0.01 265;
+    /* Deep blue-gray primary */
+    --primary: 0.28 0.04 265;
     --primary-foreground: 1 0 0;
-    /* Purple #8B5CF6 */
-    --secondary: 0.56 0.23 280;
-    --secondary-foreground: 1 0 0;
-    --muted: 0.93 0.02 220;
-    --muted-foreground: 0.5 0.04 245;
-    /* Blue #2FAFE3 */
-    --accent: 0.65 0.15 220;
+    /* Light gray secondary */
+    --secondary: 0.94 0.006 250;
+    --secondary-foreground: 0.28 0.04 265;
+    --muted: 0.95 0.005 250;
+    --muted-foreground: 0.52 0.016 265;
+    /* Rose pink accent for selections */
+    --accent: 0.72 0.18 10;
     --accent-foreground: 1 0 0;
     --destructive: 0.62 0.22 25;
     --destructive-foreground: 1 0 0;
-    --border: 0.88 0.03 220;
-    --input: 0.88 0.03 220;
-    --ring: 0.65 0.15 220;
-    --chart-1: 0.62 0.22 25;
-    --chart-2: 0.65 0.15 220;
-    --chart-3: 0.66 0.17 155;
-    --chart-4: 0.56 0.23 280;
-    --chart-5: 0.82 0.18 85;
-    --sidebar: 1 0 0;
-    --sidebar-foreground: 0.25 0.05 245;
-    --sidebar-primary: 0.62 0.22 25;
+    --border: 0.9 0.006 250;
+    --input: 0.9 0.006 250;
+    --ring: 0.28 0.04 265;
+    --chart-1: 0.28 0.04 265;
+    --chart-2: 0.72 0.18 10;
+    --chart-3: 0.55 0.12 155;
+    --chart-4: 0.65 0.15 220;
+    --chart-5: 0.75 0.16 85;
+    --sidebar: 0.14 0.01 265;
+    --sidebar-foreground: 0.92 0.004 250;
+    --sidebar-primary: 0.72 0.18 10;
     --sidebar-primary-foreground: 1 0 0;
-    --sidebar-accent: 0.93 0.02 220;
-    --sidebar-accent-foreground: 0.25 0.05 245;
-    --sidebar-border: 0.88 0.03 220;
-    --sidebar-ring: 0.65 0.15 220;
+    --sidebar-accent: 0.22 0.015 265;
+    --sidebar-accent-foreground: 0.92 0.004 250;
+    --sidebar-border: 0.28 0.02 265;
+    --sidebar-ring: 0.72 0.18 10;
   }
 
   * {
@@ -57,161 +71,65 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "Nunito", sans-serif;
+    font-family: "DM Sans", system-ui, sans-serif;
   }
 }
 
-/* Confetti burst animation */
-@keyframes confetti-pop {
-  0% {
-    transform: scale(0) rotate(0deg);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.4) rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(360deg);
-    opacity: 0.8;
-  }
+/* Disable image selection/download on client gallery */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
 }
 
-@keyframes star-float {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-12px) scale(1.2);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
+.gallery-image-wrapper {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  20% {
-    transform: translateX(-8px);
-  }
-  40% {
-    transform: translateX(8px);
-  }
-  60% {
-    transform: translateX(-8px);
-  }
-  80% {
-    transform: translateX(8px);
-  }
+.gallery-image-wrapper img {
+  pointer-events: none;
 }
 
-@keyframes bounce-in {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  80% {
-    transform: scale(0.95);
-  }
-  100% {
-    transform: scale(1);
-  }
+/* Photo selected overlay */
+.photo-selected-overlay {
+  background: oklch(0.72 0.18 10 / 0.18);
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+/* Smooth image loading */
+.photo-thumb {
+  transition: opacity 0.3s ease;
 }
 
-@keyframes spin-slow {
+@keyframes fade-in {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(8px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-20px) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(720deg);
+.animate-fade-in {
+  animation: fade-in 0.4s ease forwards;
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.92);
     opacity: 0;
   }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 oklch(0.82 0.18 85 / 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 12px oklch(0.82 0.18 85 / 0);
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
-.animate-confetti-pop {
-  animation: confetti-pop 0.6s ease-out forwards;
-}
-.animate-star-float {
-  animation: star-float 1.5s ease-in-out infinite;
-}
-.animate-shake {
-  animation: shake 0.5s ease-in-out;
-}
-.animate-bounce-in {
-  animation: bounce-in 0.4s ease-out forwards;
-}
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-.animate-spin-slow {
-  animation: spin-slow 8s linear infinite;
-}
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.confetti-piece {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  animation: confetti-fall linear forwards;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* Jungle gradient */
-.jungle-bg {
-  background: linear-gradient(
-    180deg,
-    oklch(0.72 0.12 210) 0%,
-    oklch(0.82 0.09 195) 40%,
-    oklch(0.88 0.08 160) 100%
-  );
-}
-
-.sky-bg {
-  background: linear-gradient(
-    135deg,
-    oklch(0.95 0.025 220) 0%,
-    oklch(0.97 0.018 200) 50%,
-    oklch(0.96 0.02 215) 100%
-  );
+.animate-scale-in {
+  animation: scale-in 0.25s ease forwards;
 }
